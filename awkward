@@ -18,38 +18,39 @@ NR < header {next}
 		}
 	}
 	else {
-		print "{"
-			for (i=1; i < fields; i++) {
-				print "\""headers[i]"\": " 
+		if (NF > 0) {
+			print "{"
+				for (i=1; i < fields; i++) {
+					print "\""headers[i]"\": " 
+					if (isnum($i)) {
+						print $i
+					}
+					else{
+						print "\"" $i "\""
+				}
+				print	", "
+			}
+	
+			print "\""headers[fields]"\": "
+	
+			if (NF==fields) {
 				if (isnum($i)) {
 					print $i
 				}
-				else{
+				else {
 					print "\"" $i "\""
-			}
-			print	", "
-		}
-
-		print "\""headers[fields]"\": "
-
-		if (NF==fields) {
-			if (isnum($i)) {
-				print $i
+				}
 			}
 			else {
-				print "\"" $i "\""
+				print "\""
+				for (i=fields; i <=NF; i++) {
+					print $i " "
+				}
+			print "\"" 
 			}
+	
+		print "}\n"
 		}
-		else {
-			print "\""
-			for (i=fields; i <=NF; i++) {
-				print $i " "
-			}
-		print "\"" 
-		}
-
-	print "}\n"
-
 	}
 	fflush()
 }
